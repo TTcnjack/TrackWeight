@@ -1,0 +1,29 @@
+# "菜谱"的名字
+name: Build TrackWeight App
+
+# 触发条件：当手动点击运行时触发（最适合您的场景）
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    # 指定厨师（机器人）的工作环境：最新的 macOS
+    runs-on: macos-latest
+
+    steps:
+      # 第一步：把您的代码从仓库拿到厨房（虚拟机）
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 第二步：开始烹饪（编译应用）
+      # 我们使用 `archive` 命令，这是生成分发版本 .app 的标准方式
+      - name: Build and Archive an App
+        run: xcodebuild -scheme TrackWeight archive -archivePath ./build/TrackWeight.xcarchive
+
+      # 第三步：打包成品（上传 .app 文件）
+      # 从归档文件中找到 .app，并将其作为可下载的 "构件" 上传
+      - name: Upload App Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TrackWeight-App
+          path: ./build/TrackWeight.xcarchive/Products/Applications/TrackWeight.app
