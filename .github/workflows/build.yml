@@ -14,10 +14,10 @@ jobs:
 
       # 新增步骤：选择 Xcode 16.0 Beta 版本
       # 这是解决问题的关键！
-      - name: Select Xcode 16.0 beta
+      - name: Select Xcode 16.2.0 beta
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0' # 指定使用 Xcode 16
+          xcode-version: '16.2.0' # 指定使用 Xcode 16
 
       # 第三步：编译应用（不变）
       - name: Build and Archive an App
