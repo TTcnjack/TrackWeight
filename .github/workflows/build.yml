@@ -8,20 +8,22 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # 第一步：检出代码（不变）
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 新增步骤：选择 Xcode 16.0 Beta 版本
-      # 这是解决问题的关键！
-      - name: Select Xcode 16.0 beta
+      - name: Select Xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.2.0' # 指定使用 Xcode 16
+          # 使用一个列表中可用的Xcode 16版本
+          xcode-version: '16.2.0'
 
-      # 第三步：编译应用（不变）
-      - name: Build and Archive an App
-        run: xcodebuild -scheme TrackWeight archive -archivePath ./build/TrackWeight.xcarchive
+      # 第三步：编译应用，并跳过代码签名
+      - name: Build and Archive an App (without signing)
+        run: >
+          xcodebuild -scheme TrackWeight archive
+          -archivePath ./build/TrackWeight.xcarchive
+          CODE_SIGN_IDENTITY=""
+          CODE_SIGNING_REQUIRED=NO
 
       # 第四步：上传构件（不变）
       - name: Upload App Artifact
@@ -29,3 +31,4 @@ jobs:
         with:
           name: TrackWeight-App
           path: ./build/TrackWeight.xcarchive/Products/Applications/TrackWeight.app
+
